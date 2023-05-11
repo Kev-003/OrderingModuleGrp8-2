@@ -1,3 +1,4 @@
+
 class PizzaOrderFormGrp8 extends javax.swing.JFrame {
 
     /**
@@ -70,6 +71,7 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        listFlavor.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         listFlavor.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 listFlavorValueChanged(evt);
@@ -108,16 +110,13 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
         lblDrinkPrice.setText("Drink Price");
 
         txtDrinkPrice.setEditable(false);
+        txtDrinkPrice.setText(Integer.toString(intDrinkSizePrice)
+        );
 
         btnOrder.setText("Place your Order");
         btnOrder.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnOrderMouseClicked(evt);
-            }
-        });
-        btnOrder.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MouseClicked(evt);
             }
         });
 
@@ -130,6 +129,7 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
         jScrollPane4.setViewportView(listPrice);
 
         txtPizzaPrice.setEditable(false);
+        txtPizzaPrice.setText(Integer.toString(intPizzaSizePrice));
 
         lblTotal.setText("Total");
 
@@ -310,24 +310,35 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void MouseClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_MouseClicked
-
     private void btnPayPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnPayPerformed
 
     private void btnOrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOrderMouseClicked
-        // TODO add your handling code here:
+        listOrder.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] orders = {listFlavor.getSelectedValue()+" - "+cmbPizzaSize.getSelectedItem().toString()};
+            
+            @Override
+            public int getSize() { return orders.length; }
+            @Override
+            public String getElementAt(int i) { return orders[i]; }
+            
+    });
+        
+    listFlavor.clearSelection();
+    listDrinks.clearSelection();
     }//GEN-LAST:event_btnOrderMouseClicked
 
     private void cmbPizzaSizeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbPizzaSizeItemStateChanged
         switch (cmbPizzaSize.getSelectedItem().toString()) {
-            case "Small" -> intPizzaSizePrice = 300;
-            case "Medium" -> intPizzaSizePrice = 450;
-            case "Large" -> intPizzaSizePrice = 500;
-            case "Family" -> intPizzaSizePrice = 550;
+            case "Small" ->
+                intPizzaSizePrice = 300;
+            case "Medium" ->
+                intPizzaSizePrice = 450;
+            case "Large" ->
+                intPizzaSizePrice = 500;
+            case "Family" ->
+                intPizzaSizePrice = 550;
             default -> {
             }
         }
@@ -336,8 +347,10 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
 
     private void cmbDrinkSizeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbDrinkSizeItemStateChanged
         switch (cmbDrinkSize.getSelectedItem().toString()) {
-            case "Regular" -> intDrinkSizePrice = 30;
-            case "Large" -> intDrinkSizePrice = 50;
+            case "Regular" ->
+                intDrinkSizePrice = 30;
+            case "Large" ->
+                intDrinkSizePrice = 50;
             default -> {
             }
         }
@@ -349,7 +362,7 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
     }//GEN-LAST:event_listFlavorValueChanged
 
     private void listDrinksValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listDrinksValueChanged
-        // TODO add your handling code here:
+        strDrinks = evt.getSource().toString();
     }//GEN-LAST:event_listDrinksValueChanged
 
     /**
@@ -386,11 +399,12 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
     }
 
     //Variables declaration
-    String strPizzaFlavor;
-    int intPizzaSizePrice,
-        intDrinkSizePrice;
-    
-    
+    String strPizzaFlavor,
+            strDrinks;
+    int intPizzaSizePrice = 300,
+            intDrinkSizePrice = 30;
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOrder;
     private javax.swing.JButton btnPay;
