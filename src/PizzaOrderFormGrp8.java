@@ -55,12 +55,6 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
 
         lblName.setText("Customer Name");
 
-        txtName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNameActionPerformed(evt);
-            }
-        });
-
         lblAddress.setText("Address");
 
         lblFlavor.setText("Flavor");
@@ -76,6 +70,11 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        listFlavor.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listFlavorValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(listFlavor);
 
         cmbPizzaSize.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Small", "Medium", "Large", "Family" }));
@@ -89,6 +88,11 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
             String[] strings = { "Water", "Sprite", "Royal", "Iced Tea" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
+        });
+        listDrinks.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listDrinksValueChanged(evt);
+            }
         });
         jScrollPane2.setViewportView(listDrinks);
 
@@ -306,10 +310,6 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNameActionPerformed
-
     private void MouseClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_MouseClicked
@@ -323,12 +323,34 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
     }//GEN-LAST:event_btnOrderMouseClicked
 
     private void cmbPizzaSizeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbPizzaSizeItemStateChanged
-        // TODO add your handling code here:
+        switch (cmbPizzaSize.getSelectedItem().toString()) {
+            case "Small" -> intPizzaSizePrice = 300;
+            case "Medium" -> intPizzaSizePrice = 450;
+            case "Large" -> intPizzaSizePrice = 500;
+            case "Family" -> intPizzaSizePrice = 550;
+            default -> {
+            }
+        }
+        txtPizzaPrice.setText(Integer.toString(intPizzaSizePrice));
     }//GEN-LAST:event_cmbPizzaSizeItemStateChanged
 
     private void cmbDrinkSizeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbDrinkSizeItemStateChanged
-        // TODO add your handling code here:
+        switch (cmbDrinkSize.getSelectedItem().toString()) {
+            case "Regular" -> intDrinkSizePrice = 30;
+            case "Large" -> intDrinkSizePrice = 50;
+            default -> {
+            }
+        }
+        txtDrinkPrice.setText(Integer.toString(intDrinkSizePrice));
     }//GEN-LAST:event_cmbDrinkSizeItemStateChanged
+
+    private void listFlavorValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listFlavorValueChanged
+        strPizzaFlavor = evt.getSource().toString();
+    }//GEN-LAST:event_listFlavorValueChanged
+
+    private void listDrinksValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listDrinksValueChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listDrinksValueChanged
 
     /**
      * @param args the command line arguments
@@ -363,6 +385,12 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
         });
     }
 
+    //Variables declaration
+    String strPizzaFlavor;
+    int intPizzaSizePrice,
+        intDrinkSizePrice;
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOrder;
     private javax.swing.JButton btnPay;
