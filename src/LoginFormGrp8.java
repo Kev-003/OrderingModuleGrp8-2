@@ -39,6 +39,7 @@ public class LoginFormGrp8 extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("My Login Form");
+        setBounds(new java.awt.Rectangle(450, 300, 0, 0));
 
         lblUsername.setText("Username");
 
