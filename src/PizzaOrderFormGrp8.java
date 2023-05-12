@@ -53,6 +53,7 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
         btnPay = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("My Pizza Order Form");
 
         lblName.setText("Customer Name");
 
@@ -311,22 +312,41 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPayPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayPerformed
-        // TODO add your handling code here:
+        String name = txtName.getText();
+        String address = txtAddress.getText();
+        
+        if (!name.isBlank() && !address.isBlank()) {
+            getChange();
+        } else {
+            showNameAddressEmpty();
+        }
     }//GEN-LAST:event_btnPayPerformed
 
     private void btnOrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOrderMouseClicked
-        listOrder.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] orders = {listFlavor.getSelectedValue()+" - "+cmbPizzaSize.getSelectedItem().toString()};
-            
-            @Override
-            public int getSize() { return orders.length; }
-            @Override
-            public String getElementAt(int i) { return orders[i]; }
-            
-    });
+        String pizzaFlavor = listFlavor.getSelectedValue();
+        String pizzaSize = cmbPizzaSize.getSelectedItem().toString();
+        String drink = listDrinks.getSelectedValue();
+        String drinkSize = cmbDrinkSize.getSelectedItem().toString();
+
+        if (pizzaFlavor != null) {
+            currentOrders.addElement(pizzaFlavor + " - " + pizzaSize);
+            priceList.addElement(intPizzaSizePrice);
+        }
+        if (drink != null) {
+            currentOrders.addElement(drink + " - " + drinkSize);
+            priceList.addElement(intDrinkSizePrice);
+        }
         
-    listFlavor.clearSelection();
-    listDrinks.clearSelection();
+        listOrder.setModel(currentOrders);
+        listPrice.setModel(priceList);
+        
+        lblTotalAmt.setText(Integer.toString(getTotalPrice()));
+        txtAmt.setText(Integer.toString(getTotalPrice()));
+        
+        listFlavor.clearSelection();
+        listDrinks.clearSelection();
+
+
     }//GEN-LAST:event_btnOrderMouseClicked
 
     private void cmbPizzaSizeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbPizzaSizeItemStateChanged
@@ -365,9 +385,37 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
         strDrinks = evt.getSource().toString();
     }//GEN-LAST:event_listDrinksValueChanged
 
-    /**
-     * @param args the command line arguments
-     */
+    private int getTotalPrice() {
+        int sum = 0;
+        javax.swing.ListModel<Integer> prices = listPrice.getModel();
+        int size = prices.getSize();
+        for (int i = 0; i < size; i++) {
+            sum += prices.getElementAt(i);
+        }
+        return sum;
+    }
+    
+    private int getChange() {
+        int sum = getTotalPrice();
+        int cash = Integer.parseInt(txtCash.getText());
+        int change = cash - sum;
+        
+        if (change < 0) {
+            showInsufficientCash();
+        } else {
+            txtChange.setText(Integer.toString(change));
+        }
+        return change;
+    }
+    
+    private void showInsufficientCash() {
+        javax.swing.JOptionPane.showMessageDialog(null, "PAYMENT ERROR\nInsufficient payment.", getTitle(), javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void showNameAddressEmpty() {
+        javax.swing.JOptionPane.showMessageDialog(null, "PAYMENT ERROR\nName and Address cannot be empty.", getTitle(), javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -403,7 +451,8 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
             strDrinks;
     int intPizzaSizePrice = 300,
             intDrinkSizePrice = 30;
-
+    private final javax.swing.DefaultListModel<String> currentOrders = new javax.swing.DefaultListModel<>();
+    private final javax.swing.DefaultListModel<Integer> priceList = new javax.swing.DefaultListModel<>();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOrder;
@@ -432,7 +481,7 @@ class PizzaOrderFormGrp8 extends javax.swing.JFrame {
     private javax.swing.JList<String> listDrinks;
     private javax.swing.JList<String> listFlavor;
     private javax.swing.JList<String> listOrder;
-    private javax.swing.JList<String> listPrice;
+    private javax.swing.JList<Integer> listPrice;
     private javax.swing.JTextField txtAddress;
     private javax.swing.JTextField txtAmt;
     private javax.swing.JTextField txtCash;
